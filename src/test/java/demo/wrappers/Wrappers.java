@@ -8,13 +8,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 public class Wrappers {
     private WebDriver driver;
+    private WebDriverWait wait;
 
     public Wrappers(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30)); 
     }
 
     // Navigate to a URL
@@ -34,6 +35,11 @@ public class Wrappers {
         element.click();
     }
 
+    // Click any element passed as a parameter
+    public void clickElement(WebElement element) {
+        wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+    }
+
     // Find element by CSS selector
     public WebElement findElementByCssSelector(String cssSelector) {
         return driver.findElement(By.cssSelector(cssSelector));
@@ -50,12 +56,8 @@ public class Wrappers {
     }
 
     // Handle pagination
-   public void goToNextPage(String nextPageXPath) {
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-   
+    public void goToNextPage(String nextPageXPath) {
         WebElement nextPageButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(nextPageXPath)));
         nextPageButton.click();
-   
-}
-
+    }
 }
